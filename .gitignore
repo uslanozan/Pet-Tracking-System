@@ -1,1 +1,53 @@
 notes.docx
+
+# Go binary files
+*.exe
+*.exe~
+*.dll
+*.so
+*.dylib
+
+# Go workspace
+go.work
+go.sum
+
+# Vendor directory (eğer kullanıyorsanız)
+vendor/
+
+# Node.js dependencies
+node_modules/
+
+# Build output
+dist/
+build/
+
+# Log files
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# IDE/Editor dosyaları
+.idea/
+.vscode/
+
+# MacOS sistem dosyaları
+.DS_Store
+
+# Windows sistem dosyaları
+Thumbs.db
+
+# Test çıktıları
+*.test
+
+# Environment files
+.env
+.env.local
+.env.*.local
+
+# Temporary files
+*.log
+*.pid
+
+# Docker
+.docker/
+docker-compose.override.yml
