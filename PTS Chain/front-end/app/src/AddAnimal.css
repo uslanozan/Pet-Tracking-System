@@ -1,0 +1,58 @@
+.add-animal-page {
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 20px;
+  font-family: Arial, sans-serif;
+  background: linear-gradient(135deg, #ece906, #0352e4);
+  color: #333;
+  border-radius: 10px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); 
+}
+  
+  h1 {
+    text-align: center;
+    color: #333;
+  }
+  
+  .animal-form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+  }
+  
+  label {
+    display: flex;
+    flex-direction: column;
+    color: #555;
+  }
+  
+  input,
+  textarea,
+  select {
+    padding: 10px;
+    border: 1px solid #08dfcd;
+    border-radius: 5px;
+    font-size: 1rem;
+    background: linear-gradient(135deg, #0004f5, #035210);
+    color: rgb(185, 91, 223);
+  }
+  
+  textarea {
+    resize: none;
+    height: 80px;
+  }
+  
+  button {
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-size: 1rem;
+    cursor: pointer;
+  }
+  
+  button:hover {
+    background-color: #0056b3;
+  }
+  
