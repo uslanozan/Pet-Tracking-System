@@ -1,10 +1,8 @@
-
 import {buildModule} from "@nomicfoundation/hardhat-ignition/modules";
 
-module.exports = buildModule("AnimalTracking", (m) => {
-    // Define the deployment steps
-    const animalTracking = m.contract("AnimalTracking");
+export default buildModule("AnimalTrackingModule", (m) => {
 
-    // Return the module
-    return { animalTracking };
+  const animalTracking = m.contract("AnimalTracking", []);
+
+  return { animalTracking };
 });
