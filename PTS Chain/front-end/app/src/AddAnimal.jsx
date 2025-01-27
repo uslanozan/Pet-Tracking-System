@@ -3,66 +3,54 @@ import { useNavigate } from "react-router-dom";
 import "./css/styles.css";
 import "./AddAnimal.css"
 
-const AddAnimal = ({ addAnimal, animals }) => {
+const AddAnimal = () => {
   const [formData, setFormData] = useState({
     animalName: "",
-    species: "",
-    age: "",
-    additionalInfo: "",
-    addedBy: "0xYourAddress", // Replace with the actual user address if available
+    ownerName: "",
+    ownerAddress: "",
+    shelterName: "",
+    animalPhoto: null,
+    animalType: "",
+    animalAge: "",
+    animalGender: "",
+    vaccinesDone: "",
+    animalIllnesses: "",
   });
-  const navigate = useNavigate();
 
   const handleChange = (e) => {
-    const { name, value } = e.target;
+    const { name, value, files } = e.target;
     setFormData((prevData) => ({
       ...prevData,
-      [name]: value,
+      [name]: files ? files[0] : value,
     }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
+    const data = new FormData();
 
-    // Validate required fields
-    if (!formData.animalName || !formData.species || !formData.age) {
-      alert("Please fill in all required fields.");
-      return;
-    }
-
-    // Auto-generate a unique ID
-    const newId = animals.length > 0 ? Math.max(...animals.map(a => a.id)) + 1 : 1;
-
-    const newAnimal = {
-      id: newId,
-      name: formData.animalName,
-      species: formData.species,
-      age: Number(formData.age),
-      additionalInfo: formData.additionalInfo,
-      addedBy: formData.addedBy,
-      timestamp: new Date().toLocaleString(),
-    };
-
-    // Check for duplicate ID (optional since auto-generated)
-    const duplicate = animals.find((animal) => animal.id === newId);
-    if (duplicate) {
-      alert("A pet with this ID already exists. Please try again.");
-      return;
-    }
-
-    addAnimal(newAnimal);
-    alert("Animal added successfully!");
-    
-    // Reset form
-    setFormData({
-      animalName: "",
-      species: "",
-      age: "",
-      additionalInfo: "",
-      addedBy: "0xYourAddress",
+    // Append form data for submission
+    Object.entries(formData).forEach(([key, value]) => {
+      data.append(key, value);
     });
-    
-    navigate("/dashboard");
+
+    try {
+      const response = await fetch("http://localhost:5000/api/add-animal", {
+        method: "POST",
+        body: data, // Send FormData
+      });
+
+      if (!response.ok) {
+        throw new Error("Failed to submit animal data.");
+      }
+
+      const result = await response.json();
+      alert("Animal added successfully!");
+      console.log(result);
+    } catch (error) {
+      console.error("Error:", error);
+      alert("Failed to add the animal. Please try again.");
+    }
   };
 
   return (
@@ -79,7 +67,7 @@ const AddAnimal = ({ addAnimal, animals }) => {
             required
           />
         </label>
-
+        
         <label>
           Species:
           <input

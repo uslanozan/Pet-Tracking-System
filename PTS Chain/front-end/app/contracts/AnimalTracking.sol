@@ -3,7 +3,7 @@ pragma solidity ^0.8.28;
 
 contract AnimalTracking {
     struct Animal {
-        uint256 id; // Unique identifier for the animal
+        uint256 id; // Unique ID for the animal
         string name; // Name of the animal
         string species; // Species of the animal
         uint256 age; // Age of the animal
@@ -21,6 +21,8 @@ contract AnimalTracking {
         uint256 timestamp; // Time when the animal was added
     }
 
+
+     uint256 private _nextId;
     // Mapping to store animals by their unique ID
     mapping(uint256 => Animal) public animals;
 
@@ -30,16 +32,18 @@ contract AnimalTracking {
     // Event to notify when a new animal is added
     event AnimalAdded(uint256 indexed id, string name, string species, address indexed addedBy);
 
+
+    constructor() {
+        _nextId = 1; // Initialize the counter
+    }
     /**
      * @dev Adds a new animal to the tracking system.
-     * @param _id The unique identifier for the animal.
      * @param _name The name of the animal.
      * @param _species The species of the animal.
      * @param _age The age of the animal.
      * @param _additionalInfo Additional metadata about the animal.
      */
     function addAnimal(
-        uint256 _id,
         string memory _name,
         string memory _species,
         uint256 _age,
@@ -54,11 +58,11 @@ contract AnimalTracking {
         string memory _vaccines,
         string memory _additionalInfo
     ) public {
-        require(animals[_id].id == 0, "Animal with this ID already exists");
+        uint256 animalId = _nextId;
 
         // Create a new animal record
-        animals[_id] = Animal({
-            id: _id,
+        animals[animalId] = Animal({
+            id: animalId,
             name: _name,
             species: _species,
             age: _age,
@@ -75,11 +79,12 @@ contract AnimalTracking {
             addedBy: msg.sender,
             timestamp: block.timestamp
         });
-
-        animalIds.push(_id);
+        
+        animalIds.push(animalId);
 
         // Emit an event for the addition of the new animal
-        emit AnimalAdded(_id, _name, _species, msg.sender);
+        emit AnimalAdded(animalId, _name, _species, msg.sender);
+        _nextId++; // Increment the counter for the next ID
     }
 
     /**
@@ -92,11 +97,11 @@ contract AnimalTracking {
 
     /**
      * @dev Retrieves an animal's details by its ID.
-     * @param _id The unique identifier for the animal.
+     * @param animalId The unique identifier for the animal.
      * @return The animal's details.
      */
-    function getAnimal(uint256 _id) public view returns (Animal memory) {
-        require(animals[_id].id != 0, "Animal not found");
-        return animals[_id];
+    function getAnimal(uint256 animalId) public view returns (Animal memory) {
+        require(animals[animalId].id != 0, "Animal not found");
+        return animals[animalId];
     }
 }

@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import pets from "./assets/pets.jpg";
+import pets from "./assets/pets.jpeg";
 // import "./css/FormStyles.css"; // Import the consolidated CSS file
 
 function Register() {
