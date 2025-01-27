@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "./css/styles.css";
+import "./AddAnimal.css"
 
 const AddAnimal = ({ addAnimal, animals }) => {
   const [formData, setFormData] = useState({

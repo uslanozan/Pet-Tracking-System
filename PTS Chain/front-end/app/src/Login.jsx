@@ -15,15 +15,34 @@ function Login() {
     password: "testpassword",
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-
-    if (username === dummyUser.username && password === dummyUser.password) {
-      setIsLoggedIn(true);
-      setError("");
+  
+    const loginData = {
+      username,
+      password,
+    };
+  
+    try {
+      const response = await fetch("http://localhost:5000/api/login", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(loginData),
+      });
+  
+      if (!response.ok) {
+        throw new Error(`Error: ${response.statusText}`);
+      }
+  
+      const result = await response.json();
+      console.log("Login successful:", result);
       alert("Login successful!");
-    } else {
-      setError("Invalid username or password.");
+      setIsLoggedIn(true);
+    } catch (error) {
+      console.error("Error during login:", error);
+      alert("Login failed. Please try again.");
     }
   };
 

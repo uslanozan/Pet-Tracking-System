@@ -7,6 +7,15 @@ contract AnimalTracking {
         string name; // Name of the animal
         string species; // Species of the animal
         uint256 age; // Age of the animal
+        string ownerName; // Name of the owner
+        string ownerPhone; // Phone number of the owner
+        string ownerAddress; // Address of the owner
+        string shelterName; // Name of the shelter
+        string gender; // gender of the animal
+        uint32 weight; // weight of the animal in kg
+        uint32 height; // height of the animal in cm
+        string illnesses; // List of illnesses the animal has
+        string vaccines; // List of vaccines the animal has received
         string additionalInfo; // Additional metadata about the animal
         address addedBy; // Address of the user who added the animal
         uint256 timestamp; // Time when the animal was added
@@ -34,6 +43,15 @@ contract AnimalTracking {
         string memory _name,
         string memory _species,
         uint256 _age,
+        string memory _ownerName,
+        string memory _ownerPhone,
+        string memory _ownerAddress,
+        string memory _shelterName,
+        string memory _gender,
+        uint32 _weight,
+        uint32 _height,
+        string memory _illnesses,
+        string memory _vaccines,
         string memory _additionalInfo
     ) public {
         require(animals[_id].id == 0, "Animal with this ID already exists");
@@ -44,6 +62,15 @@ contract AnimalTracking {
             name: _name,
             species: _species,
             age: _age,
+            ownerName: _ownerName,
+            ownerPhone: _ownerPhone,
+            ownerAddress: _ownerAddress,
+            shelterName: _shelterName,
+            gender: _gender,
+            weight: _weight,
+            height: _height,
+            illnesses: _illnesses,
+            vaccines: _vaccines,
             additionalInfo: _additionalInfo,
             addedBy: msg.sender,
             timestamp: block.timestamp

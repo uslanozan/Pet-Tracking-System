@@ -14,6 +14,12 @@ const Navbar = () => {
     <nav className="navbar">
       <h1 className="navbar-brand">Pet Tracking System</h1>
       <div className="navbar-links">
+      <NavLink to="/" className="nav-link">
+          Login
+        </NavLink>
+      <NavLink to="/register" className="nav-link">
+          Register
+        </NavLink>
         <NavLink to="/dashboard" className="nav-link">
           Dashboard
         </NavLink>

@@ -8,6 +8,7 @@ import Dashboard from "./Dashboard";
 import AddAnimal from "./AddAnimal";
 import EditAnimal from "./EditAnimal";
 
+
 function App() {
   const [animals, setAnimals] = useState(() => {
     const storedAnimals = localStorage.getItem("animals");
