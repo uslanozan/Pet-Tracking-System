@@ -1,20 +1,22 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
 import "./css/styles.css";
 import "./AddAnimal.css"
 
 const AddAnimal = () => {
   const [formData, setFormData] = useState({
     animalName: "",
+    species: "",
+    age: "",
     ownerName: "",
+    ownerPhone: "",
     ownerAddress: "",
     shelterName: "",
-    animalPhoto: null,
-    animalType: "",
-    animalAge: "",
-    animalGender: "",
-    vaccinesDone: "",
-    animalIllnesses: "",
+    gender: "",
+    weight: "",
+    height: "",
+    illnesses: "",
+    vaccines: "",
+    additionalInfo: "",
   });
 
   const handleChange = (e) => {
@@ -67,7 +69,7 @@ const AddAnimal = () => {
             required
           />
         </label>
-        
+
         <label>
           Species:
           <input
@@ -91,6 +93,103 @@ const AddAnimal = () => {
         </label>
 
         <label>
+          Owner Name:
+          <input
+            type="text"
+            name="ownerName"
+            value={formData.ownerName}
+            onChange={handleChange}
+            required
+          />
+        </label>
+
+        <label>
+          Owner Phone:
+          <input
+            type="text"
+            name="ownerPhone"
+            value={formData.ownerPhone}
+            onChange={handleChange}
+            required
+          />
+        </label>
+        <label>
+          Owner Address:
+          <input
+            type="text"
+            name="ownerAddress"
+            value={formData.ownerAddress}
+            onChange={handleChange}
+            required
+          />
+        </label>
+        <label>
+          Shelter Name:
+          <input
+            type="text"
+            name="shelterName"
+            value={formData.shelterName}
+            onChange={handleChange}
+            required
+          />
+        </label>
+
+        <label>
+          Gender:
+          <input
+            type="text"
+            name="gender"
+            value={formData.gender}
+            onChange={handleChange}
+            required
+          />
+        </label>
+
+        <label>
+          Weigth (kg):
+          <input
+            type="number"
+            name="weight"
+            value={formData.weight}
+            onChange={handleChange}
+            required
+          />
+        </label>
+
+        <label>
+          Height (cm):
+          <input
+            type="number"
+            name="height"
+            value={formData.height}
+            onChange={handleChange}
+            required
+          />
+        </label>
+
+        <label>
+          Illnesses:
+          <input
+            type="text"
+            name="illnesses"
+            value={formData.illnesses}
+            onChange={handleChange}
+            required
+          />
+        </label>
+
+        <label>
+          Vaccines:
+          <input
+            type="text"
+            name="vaccines"
+            value={formData.vaccines}
+            onChange={handleChange}
+            required
+          />
+        </label>
+
+        <label>
           Additional Info:
           <input
             type="text"
@@ -98,17 +197,6 @@ const AddAnimal = () => {
             value={formData.additionalInfo}
             onChange={handleChange}
             // Optional: Not required
-          />
-        </label>
-
-        <label>
-          Added By:
-          <input
-            type="text"
-            name="addedBy"
-            value={formData.addedBy}
-            onChange={handleChange}
-            required
           />
         </label>
 

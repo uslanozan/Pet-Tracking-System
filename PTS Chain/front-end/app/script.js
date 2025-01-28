@@ -1,59 +1,7 @@
-import React, { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
-import "./css/styles.css";
 import { ethers } from "ethers";
 
-const Dashboard = ({}) => {
-  const [searchQuery, setSearchQuery] = useState("");
-  const [decodedAnimals, setDecodedAnimals] = useState([]);
-  const navigate = useNavigate();
-
-  // Mock function simulating fetching data
-  useEffect(() => {
-    // Replace this with your actual data fetching logic
-    const mockDecodedData = [
-    ];
-    setDecodedAnimals(mockDecodedData);
-    listTransactions()
-  }, []);
-
-  var animal =
-    {
-      name:"",
-      species:"",
-      age:"",
-      ownerName:"",
-      ownerPhone:"",
-      ownerAddress:"",
-      shelterName:"",
-      gender:"",
-      weight:"",
-      height:"",
-      illnesses:"",
-      vaccines:"",
-      additionalInfo:"",
-  };
-
-
-  const handleAddAnimal = (newAnimal) => {
-    setDecodedAnimals((prevAnimals) => [...prevAnimals, newAnimal]);
-  };
-
-  const handleSearch = (e) => {
-    setSearchQuery(e.target.value);
-  };
-
-  const filteredAnimals = decodedAnimals.filter(
-    (animal) =>
-      animal.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      animal.species.toLowerCase().includes(searchQuery.toLowerCase())
-  );
-
-  const handleEdit = (id) => {
-    navigate(`/edit-pet/${id}`);
-  };
-
-  const provider = new ethers.JsonRpcProvider("http://127.0.0.1:8545");
+// Replace with your provider URL
+const provider = new ethers.JsonRpcProvider("http://127.0.0.1:8545");
 
 // Replace with your deployed contract address and ABI
 const contractAddress = "0x9fE46736679d2D9a65F0992F2272dE9f3c7fa6e0";
@@ -469,22 +417,19 @@ const contractABI = [
     }
   ];
 
-
-  
-
 async function listTransactions() {
-  
     try {
         const blockNumber = await provider.getBlockNumber();
         console.log("Current Block Number:", blockNumber);
 
         const iface = new ethers.Interface(contractABI);
-        const array = [];
+
         for (let i = blockNumber; i >= 1; i--) {
             const block = await provider.getBlock(i);
 
             // Loop through transaction hashes in the block
-                const transaction = await provider.getTransaction(block.transactions[0]);
+            for (const txHash of block.transactions) {
+                const transaction = await provider.getTransaction(txHash);
 
                 // Check if the transaction is sent to the contract address
                 if (transaction.to && transaction.to.toLowerCase() === contractAddress.toLowerCase()) {
@@ -492,97 +437,21 @@ async function listTransactions() {
                     // Decode the input data
                     try {
                         const decodedData = iface.decodeFunctionData("addAnimal", transaction.data);
-                        const decodedArray = decodedData.toArray(); 
-                        animal.name = decodedArray[0];
-                        animal.species = decodedArray[1];
-                        animal.age = decodedArray[2].toString();
-                        animal.ownerName = decodedArray[3];
-                        animal.ownerPhone = decodedArray[4];
-                        animal.ownerAddress = decodedArray[5];
-                        animal.shelterName = decodedArray[6];
-                        animal.gender = decodedArray[7];
-                        animal.weight = decodedArray[8].toString();
-                        animal.height = decodedArray[9].toString();
-                        animal.illnesses = decodedArray[10];
-                        animal.vaccines = decodedArray[11];
-                        animal.additionalInfo = decodedArray[12];
-                        
-
+                        console.log("Decoded Data:", decodedData.toArray());
                     } catch (decodeError) {
                         console.error("Failed to decode transaction data:", decodeError);
                     }
-                    array.push(animal);
                 }
-         
-            
+            }
         }
-        setDecodedAnimals(array);
     } catch (error) {
         console.error("Error listing transactions:", error);
     }
 }
 
-  return (
-    
-    <div className="container">
-      <h2 className="heading">Pet Tracking Dashboard</h2>
-      <div className="dashboard-controls">
-        <input
-          type="text"
-          placeholder="Search by Name or Species"
-          value={searchQuery}
-          onChange={handleSearch}
-          className="search-input"
-        />
-      </div>
-      <table className="animal-table">
-        <thead>
-          <tr>
-            <th>Name</th>
-            <th>Species</th>
-            <th>Age</th>
-            <th>Owner Name</th>
-            <th>Owner Phone</th>
-            <th>Owner Address</th>
-            <th>Shelter Name</th>
-            <th>Gender</th>
-            <th>Weight</th>
-            <th>Height</th>
-            <th>Illnesses</th>
-            <th>Vaccines</th>
-            <th>Additional Info</th>
-          </tr>
-        </thead>
-        <tbody>
-          {filteredAnimals.length > 0 ? (
-            filteredAnimals.map((animal) => (
-              <tr key={animal.id}>
-                <td>{animal.name}</td>
-                <td>{animal.species}</td>
-                <td>{animal.age}</td>
-                <td>{animal.ownerName}</td>
-                <td>{animal.ownerPhone}</td>
-                <td>{animal.ownerAddress}</td>
-                <td>{animal.shelterName}</td>
-                <td>{animal.gender}</td>
-                <td>{animal.weight}</td>
-                <td>{animal.height}</td>
-                <td>{animal.illnesses}</td>
-                <td>{animal.vaccines}</td>
-                <td>{animal.additionalInfo}</td>
-              </tr>
-            ))
-          ) : (
-            <tr>
-              <td colSpan="15" className="text-center">
-                No pets found.
-              </td>
-            </tr>
-          )}
-        </tbody>
-      </table>
-    </div>
-  );
-};
+listTransactions();
 
-export default Dashboard;
+
+
+
+

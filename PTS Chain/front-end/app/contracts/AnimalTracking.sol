@@ -30,7 +30,21 @@ contract AnimalTracking {
     uint256[] public animalIds;
 
     // Event to notify when a new animal is added
-    event AnimalAdded(uint256 indexed id, string name, string species, address indexed addedBy);
+    event AnimalAdded(
+    uint256 indexed id,
+    string name, 
+    string species, 
+    uint256 age, 
+    string ownerName,
+    string ownerPhone,
+    string ownerAddress,
+    string shelterName,
+    string gender,
+    uint32 weight,
+    uint32 height,
+    string illnesses,
+    string vaccines,
+    address indexed addedBy);
 
 
     constructor() {
@@ -41,6 +55,15 @@ contract AnimalTracking {
      * @param _name The name of the animal.
      * @param _species The species of the animal.
      * @param _age The age of the animal.
+     * @param _ownerName The name of the owner.
+     * @param _ownerPhone The phone number of the owner.
+     * @param _ownerAddress The address of the owner.
+     * @param _shelterName The name of the shelter.
+     * @param _gender Gender of the animal.
+     * @param _weight Weight of the animal in kg.
+     * @param _height Height of the animal in cm.
+     * @param _illnesses List of illnesses the animal has.
+     * @param _vaccines List of vaccines the animal has received.
      * @param _additionalInfo Additional metadata about the animal.
      */
     function addAnimal(
@@ -83,16 +106,30 @@ contract AnimalTracking {
         animalIds.push(animalId);
 
         // Emit an event for the addition of the new animal
-        emit AnimalAdded(animalId, _name, _species, msg.sender);
+        emit AnimalAdded(animalId,
+         _name,
+         _species, 
+         _age,
+        _ownerName,
+        _ownerPhone,
+        _ownerAddress,
+        _shelterName,
+        _gender,
+        _weight,
+        _height,
+        _illnesses,
+        _vaccines,
+         msg.sender);
         _nextId++; // Increment the counter for the next ID
     }
 
-    /**
-     * @dev Gets the total number of animals in the tracking system.
-     * @return The number of animals added.
-     */
+   
     function getAnimalCount() public view returns (uint256) {
         return animalIds.length;
+    }
+    
+    function getNextId() public view returns (uint256) {
+        return _nextId;
     }
 
     /**

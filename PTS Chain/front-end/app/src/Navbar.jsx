@@ -1,13 +1,14 @@
 import React from "react";
 import { NavLink, useNavigate } from "react-router-dom";
 import "./css/styles.css";
+import Login from "./Login";
 
 const Navbar = () => {
   const navigate = useNavigate();
 
   const handleLogout = () => {
-    // Implement logout functionality if needed
     navigate("/");
+    {Login.call("setIsLoggedIn", false)}
   };
 
   return (
@@ -26,9 +27,6 @@ const Navbar = () => {
         <NavLink to="/add-pet" className="nav-link">
           Add Pet
         </NavLink>
-        <button className="logout-button" onClick={handleLogout}>
-          Logout
-        </button>
       </div>
     </nav>
   );

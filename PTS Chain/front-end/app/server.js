@@ -11,7 +11,7 @@ import hre from "hardhat";
 const app = express();
 const PORT = 5000;
 const upload = multer({ dest: "uploads/" });
-const AnimalTrackingAddress = "0x5FbDB2315678afecb367f032d93F642f64180aa3";
+const AnimalTrackingAddress = "0x9fE46736679d2D9a65F0992F2272dE9f3c7fa6e0";
 const __filename = fileURLToPath(import.meta.url); // Current file path
 const __dirname = path.dirname(__filename); // Current directory path
 
@@ -46,36 +46,55 @@ const wallet = new ethers.Wallet(privateKey, provider);
 
 // Load contract ABI and address
 const contractABI = JSON.parse(fs.readFileSync(path.resolve(__dirname, "./src/artifacts/contracts/AnimalTracking.sol/AnimalTracking.json"),"utf-8")).abi; // Update path as needed
-const contractAddress = AnimalTrackingAddress; // Replace with deployed contract address
+const contractAddress = "0x9fE46736679d2D9a65F0992F2272dE9f3c7fa6e0"; // Replace with deployed contract address
 const contract = new ethers.Contract(contractAddress, contractABI, wallet);
-
 app.post("/api/add-animal", upload.single("animalPhoto"), async (req, res) => {
   const { body, file } = req;
 
   try {
     // Animal data from request body
-    const { animalName, ownerName, ownerAddress, shelterName } = body;
+    const { 
+      animalName,
+      species,
+      age,
+      ownerName,
+      ownerPhone,
+      ownerAddress,
+      shelterName,
+      gender,
+      weight,
+      height,
+      illnesses,
+      vaccines,
+      additionalInfo,
+    } = body;
 
     console.log("Animal Data:", body);
-    console.log("Uploaded File:", file);
-
-    // Example: Read photo file as binary if needed
-    const photoBuffer = fs.readFileSync(file.path);
-
+    
     // Call the addAnimal function on the blockchain
-    const tx = await contract.addAnimal(1, "Osman", "Zeynep", 222, "Shelter");
+    const tx = await contract.addAnimal(
+      animalName,
+      species,
+      age,
+      ownerName,
+      ownerPhone,
+      ownerAddress,
+      shelterName,
+      gender,
+      weight,
+      height,
+      illnesses,
+      vaccines,
+      additionalInfo);
 
     // Wait for the transaction to be mined
     await tx.wait();
 
-    console.log("Transaction Hash:", tx.hash);
-
-    // Cleanup uploaded file
-    fs.unlinkSync(file.path);
-
     res.json({ message: "Animal added to the blockchain successfully!", transactionHash: tx.hash });
-    const transaction = await provider.getTransaction(tx.hash);
-    console.log(transaction);
+    
+    
+    
+    
 
   } catch (error) {
     console.error("Error adding animal:", error);
