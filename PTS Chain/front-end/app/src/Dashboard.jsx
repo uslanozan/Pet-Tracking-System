@@ -32,6 +32,36 @@ const Dashboard = ({ animals, deleteAnimal }) => {
 
   const [chatHistory, setChatHistory] = useState([]);
 
+  const generateBotResponse = async (history) => {
+
+    const updateHistory = (text) => {
+      setChatHistory(prev => [...prev.filter(msg => msg.text !== "Thinking..."), { role: "model", text }]);
+    };
+
+    history = history.map(({ role, text }) => ({ role, parts: [{ text }] }));
+
+
+    const requestOptions = {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({contents:  history })
+    }
+
+    try {
+      const response = await fetch(import.meta.env.VITE_API_URL, requestOptions);
+      const data = await response.json();
+      if (!response.ok) throw new Error(data.error.message || "Something went wrong");
+      
+    
+      const apiResponseText = data.candidates[0].content.parts[0].text.replace(/\*\*(.*?)\*\*/g, "$1").trim();
+      updateHistory(apiResponseText);
+      
+
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   return (
     <div className="container">
       <h2 className="heading">Pet Tracking Dashboard</h2>
@@ -122,7 +152,7 @@ const Dashboard = ({ animals, deleteAnimal }) => {
 
             {/* Chatbot Footer */}
             <div className="chat-footer">
-              <ChatForm setChatHistory={setChatHistory} />
+              <ChatForm chatHistory={chatHistory} setChatHistory={setChatHistory} generateBotResponse={generateBotResponse} />
             </div>
           </div>
 
