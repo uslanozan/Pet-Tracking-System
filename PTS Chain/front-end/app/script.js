@@ -1,9 +1,7 @@
 import { ethers } from "ethers";
 
-// Replace with your provider URL
 const provider = new ethers.JsonRpcProvider("http://127.0.0.1:8545");
 
-// Replace with your deployed contract address and ABI
 const contractAddress = "0x9fE46736679d2D9a65F0992F2272dE9f3c7fa6e0";
 const contractABI = [
     {
@@ -427,14 +425,11 @@ async function listTransactions() {
         for (let i = blockNumber; i >= 1; i--) {
             const block = await provider.getBlock(i);
 
-            // Loop through transaction hashes in the block
             for (const txHash of block.transactions) {
                 const transaction = await provider.getTransaction(txHash);
 
-                // Check if the transaction is sent to the contract address
                 if (transaction.to && transaction.to.toLowerCase() === contractAddress.toLowerCase()) {
 
-                    // Decode the input data
                     try {
                         const decodedData = iface.decodeFunctionData("addAnimal", transaction.data);
                         console.log("Decoded Data:", decodedData.toArray());
